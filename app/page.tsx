@@ -1,22 +1,21 @@
-import { fetchMetadata } from "frames.js/next";
- 
-export async function generateMetadata() {
-  return {
-    title: "My Page",
-    // ...
-    other: {
-      // ...
-      ...(await fetchMetadata(
-        // provide a full URL to your /frames endpoint
-        new URL(
-          "/frames",
-          "https://new-mini-app-psi.vercel.app"
-        )
-      )),
-    },
-  };
-}
- 
+export const metadata = {
+  title: "Mini Poll Frame",
+  description: "A Farcaster Frame powered by frames.js",
+  other: {
+    "fc:frame": "vNext",
+    "fc:frame:image": "https://dummyimage.com/600x400/000/fff&text=Mini+Poll+Frame",
+    "fc:frame:image:aspect_ratio": "1.91:1",
+    "fc:frame:button:1": "🚀 Start",
+    "fc:frame:button:1:action": "post",
+    "fc:frame:button:1:target": "https://new-mini-app-psi.vercel.app/frames"
+  }
+};
+
 export default function Page() {
-  return <span>My existing page</span>;
+  return (
+    <main style={{ textAlign: "center", padding: "2rem" }}>
+      <h1>Mini Poll Frame</h1>
+      <p>This is a minimal Warpcast frame. Click the button to launch.</p>
+    </main>
+  );
 }
