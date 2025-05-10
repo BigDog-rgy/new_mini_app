@@ -1,0 +1,14 @@
+{
+  "frame": {
+    "version": "1",
+    "name": "Mini Poll Frame",
+    "path": "/frames",
+    "iconUrl": "https://new-mini-app-psi.vercel.app/favicon.ico",
+    "splashImageUrl": "https://dummyimage.com/600x400/000/fff&text=Mini+Poll",
+    "splashBackgroundColor": "#f5f0ec",
+    "subtitle": "Try the Frame!",
+    "description": "A minimal Warpcast mini app built with frames.js",
+    "primaryCategory": "developer-tools",
+    "tags": ["demo", "poll", "frame"]
+  }
+}
