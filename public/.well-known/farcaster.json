@@ -3,6 +3,7 @@
     "version": "1",
     "name": "Mini Poll Frame",
     "path": "/frames",
+    "homeUrl": "https://new-mini-app-psi.vercel.app/",
     "iconUrl": "https://new-mini-app-psi.vercel.app/favicon.ico",
     "splashImageUrl": "https://dummyimage.com/600x400/000/fff&text=Mini+Poll",
     "splashBackgroundColor": "#f5f0ec",
