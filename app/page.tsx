@@ -3,7 +3,7 @@ export const metadata = {
   description: "A Farcaster Frame powered by frames.js",
   other: {
     "fc:frame": "vNext",
-    "fc:frame:image": "https://new-mini-app-psi.vercel.app/wendysStorefront.webp",
+    "fc:frame:image": "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
     "fc:frame:image:aspect_ratio": "1.91:1",
     "fc:frame:button:1": "Welcome to Wendy's!",
     "fc:frame:button:1:action": "post",
