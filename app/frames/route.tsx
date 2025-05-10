@@ -16,27 +16,29 @@ const handleRequest = frames(async (ctx) => {
   let buttons: JSX.Element[] = [];
   let nextStep: "entree" | "side" | "drink" | "done" = step; // Initialize nextStep
 
-  if (step === "entree") {
-    if (value) {
-      entree = value;
-      nextStep = "side";
-    }
-
-    imageText = value
-      ? `🔥 You chose the ${value}!\nPick a side:`
-      : `🍔 Welcome to Wendy’s!\nChoose your entrée:`;
-
+  // Adjusted initial step logic
+  if (step === "entree" && !value) { //If on entree and no value, show the first message.
+    imageText = `🍔 Welcome to Wendy’s!\nChoose your entrée:`;
     buttons = [
       <Button action="post" target={{ query: { value: "Fries" } }}>Fries</Button>,
       <Button action="post" target={{ query: { value: "Baconator Fries" } }}>Baconator Fries</Button>,
       <Button action="post" target={{ query: { value: "Chili" } }}>Chili</Button>,
+    ];
+    nextStep = "entree"; // Ensure nextStep is entree
+  } else if (step === "entree") { //If on entree and there is a value (meaning they selected)
+    entree = value;
+    nextStep = "side";
+    imageText = `🔥 You chose the ${value}!\nPick a side:`;
+     buttons = [
+      <Button action="post" target={{ query: { value: "Coke" } }}>Coke</Button>,
+      <Button action="post" target={{ query: { value: "Strawberry Lemonade" } }}>Strawberry Lemonade</Button>,
+      <Button action="post" target={{ query: { value: "Vanilla Frosty" } }}>Vanilla Frosty</Button>,
     ];
   } else if (step === "side") {
     if (value) {
       side = value;
       nextStep = "drink";
     }
-
     imageText = value
       ? `🍟 Side locked in: ${value}!\nNow pick your drink:`
       : `🍟 Choose your side:`;
