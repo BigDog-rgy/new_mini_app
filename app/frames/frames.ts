@@ -1,7 +1,7 @@
 import { createFrames } from "frames.js/next";
 
 export type State = {
-  step: "start" | "entree" | "side" | "drink" | "done";
+  step: "entree" | "side" | "drink" | "done";
   entree?: string;
   side?: string;
   drink?: string;
@@ -9,7 +9,7 @@ export type State = {
 
 export const frames = createFrames<State>({
   initialState: {
-    step: "start",
+    step: "entree",     // ← start here, no “start” phase
   },
-  basePath: "/frames",
+  basePath: "/frames",  // keep or remove as needed
 });

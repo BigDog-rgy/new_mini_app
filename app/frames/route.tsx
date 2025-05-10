@@ -4,99 +4,113 @@ import { frames } from "./frames";
 
 const handleRequest = frames(async (ctx) => {
   const { searchParams, state } = ctx;
-  const value = searchParams.value;
+  const raw = searchParams.value;               // last-clicked value
+  const step = state?.step ?? "entree";         // default to entrée
 
-  // Initialize state, defaulting to 'start' if undefined
-  let entree = state?.entree;
-  let side = state?.side;
-  let drink = state?.drink;
-  let step = state?.step ?? "start"; // Start at 'start' now
+  // pull existing selections
+  let entree = state.entree;
+  let side   = state.side;
+  let drink  = state.drink;
+
+  // short-circuit “Start Over” if user clicks it
+  if (raw === "start_over") {
+    return {
+      image: (
+        <div tw="text-center whitespace-pre-wrap">
+          🍔 Welcome to Wendy’s!  
+          Choose your entrée:
+        </div>
+      ),
+      buttons: [
+        <Button action="post" target={{ query: { value: "Dave's Single" } }}>
+          Dave's Single
+        </Button>,
+        <Button action="post" target={{ query: { value: "Spicy Chicken Sandwich" } }}>
+          Spicy Chicken Sandwich
+        </Button>,
+        <Button action="post" target={{ query: { value: "10pc Nuggets" } }}>
+          10pc Nuggets
+        </Button>,
+      ],
+      state: { step: "entree" },
+    };
+  }
+
   let imageText = "";
   let buttons: JSX.Element[] = [];
-  let nextStep: "start" | "entree" | "side" | "drink" | "done" = step; // Include 'start'
+  let nextStep: "entree" | "side" | "drink" | "done" = step;
 
-  // Adjusted initial step logic
-  if (step === "start") {
-    imageText = "👋 Ready to order some Wendy's?";
+
+  if (step === "entree") {
+    // when they pick their entrée
+    if (raw) {
+      entree = raw;
+      nextStep = "side";
+      imageText = `🔥 You chose the ${raw}!\nPick a side:`;
+    } else {
+      imageText = `🍔 Welcome to Wendy’s!\nChoose your entrée:`;
+    }
     buttons = [
-      <Button action="post" target={{ query: { value: "begin_order" } }}>
-        Ready to Order?
+      <Button action="post" target={{ query: { value: "Dave's Single" } }}>
+        Dave's Single
+      </Button>,
+      <Button action="post" target={{ query: { value: "Spicy Chicken Sandwich" } }}>
+        Spicy Chicken Sandwich
+      </Button>,
+      <Button action="post" target={{ query: { value: "10pc Nuggets" } }}>
+        10pc Nuggets
       </Button>,
     ];
-    nextStep = "start"; // Remain on start until the button is clicked.
-  } else if (step === "entree") {
-    if (value) {
-      entree = value;
-      nextStep = "side";
-    }
-    imageText = value
-      ? `🔥 You chose the ${value}!\nPick a side:`
-      : `🍔 Welcome to Wendy’s!\nChoose your entrée:`;
 
+  } else if (step === "side") {
+    if (raw) {
+      side = raw;
+      nextStep = "drink";
+      imageText = `🍟 Side locked in: ${raw}!\nNow pick your drink:`;
+    } else {
+      imageText = `🍟 Choose your side:`;
+    }
     buttons = [
       <Button action="post" target={{ query: { value: "Fries" } }}>Fries</Button>,
-      <Button action="post" target={{ query: { value: "Baconator Fries" } }}>Baconator Fries</Button>,
+      <Button action="post" target={{ query: { value: "Baconator Fries" } }}>
+        Baconator Fries
+      </Button>,
       <Button action="post" target={{ query: { value: "Chili" } }}>Chili</Button>,
     ];
-  } else if (step === "side") {
-    if (value) {
-      side = value;
-      nextStep = "drink";
-    }
-    imageText = value
-      ? `🍟 Side locked in: ${value}!\nNow pick your drink:`
-      : `🍟 Choose your side:`;
 
+  } else if (step === "drink") {
+    if (raw) {
+      drink = raw;
+      nextStep = "done";
+      imageText = `🥤 You picked ${raw}.\nHere’s your full order:`;
+    } else {
+      imageText = `🥤 Choose your drink:`;
+    }
     buttons = [
       <Button action="post" target={{ query: { value: "Coke" } }}>Coke</Button>,
-      <Button action="post" target={{ query: { value: "Strawberry Lemonade" } }}>Strawberry Lemonade</Button>,
-      <Button action="post" target={{ query: { value: "Vanilla Frosty" } }}>Vanilla Frosty</Button>,
+      <Button action="post" target={{ query: { value: "Strawberry Lemonade" } }}>
+        Strawberry Lemonade
+      </Button>,
+      <Button action="post" target={{ query: { value: "Vanilla Frosty" } }}>
+        Vanilla Frosty
+      </Button>,
     ];
-  } else if (step === "drink") {
-    if (value) {
-      drink = value;
-      nextStep = "done";
-    }
 
-    imageText = value
-      ? `🥤 Drink selected: ${value}.\nHere’s your full order:`
-      : `🥤 Choose your drink:`;
-
-    buttons = [
-      <Button action="post" target={{ query: { value: "start_over" } }}>Start Over</Button>,
-    ];
   } else if (step === "done") {
     imageText = `✅ Your Wendy’s order:\n🍔 Entree: ${entree}\n🍟 Side: ${side}\n🥤 Drink: ${drink}\n\nEnjoy, legend.`;
     buttons = [
-      <Button action="post" target={{ query: { value: "start_over" } }}>Start Over</Button>,
+      <Button action="post" target={{ query: { value: "start_over" } }}>
+        Start Over
+      </Button>,
     ];
-
-    // Reset only if "Start Over" is clicked
-    if (value === "start_over") {
-      nextStep = "entree";
-      entree = undefined;
-      side = undefined;
-      drink = undefined;
-    } else {
-      nextStep = "done"; // Keep step as "done" to display order until "Start Over"
-    }
+    nextStep = "done"; // stay here until they reset
   }
-
-  // Transition from 'start' to 'entree'
-  if (value === "begin_order") {
-    nextStep = "entree";
-  }
-
-  // Debugging output (remove in production)
-  console.log("Current State:", { step, entree, side, drink });
-  console.log("Next Step:", nextStep);
-  console.log("Value:", value);
 
   return {
     image: <div tw="text-center whitespace-pre-wrap">{imageText}</div>,
     buttons,
     state: {
-      step: nextStep,
+      step:  nextStep,
       entree,
       side,
       drink,
@@ -104,5 +118,5 @@ const handleRequest = frames(async (ctx) => {
   };
 });
 
-export const GET = handleRequest;
+export const GET  = handleRequest;
 export const POST = handleRequest;
