@@ -1,33 +1,26 @@
+/* eslint-disable react/jsx-key */
 import { Button } from "frames.js/next";
 import { frames } from "./frames";
-
+ 
 const handleRequest = frames(async (ctx) => {
-  if (!ctx.message) {
-    return {
-      image: (
-        <div>
-          This is the initial frame which will be shown before the user has
-          interacted with the frame.
-        </div>
-      ),
-      buttons: [<Button action="post">Say hello</Button>],
-    };
-  }
-
-  if (!ctx.message.isValid) {
-    throw new Error("Invalid message");
-  }
-
   return {
     image: (
-      <div>
-        Hello {ctx.message.requesterUserData?.displayName}! Your FID is{" "}
-        {ctx.message.requesterFid}
-      </div>
+      <span>
+        {ctx.pressedButton
+          ? `I clicked ${ctx.searchParams.value}`
+          : `Click some button`}
+      </span>
     ),
-    buttons: [],
+    buttons: [
+      <Button action="post" target={{ query: { value: "Yes" } }}>
+        Say Yes
+      </Button>,
+      <Button action="post" target={{ query: { value: "No" } }}>
+        Say No
+      </Button>,
+    ],
   };
 });
-
+ 
 export const GET = handleRequest;
 export const POST = handleRequest;
