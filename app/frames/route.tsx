@@ -6,33 +6,37 @@ const handleRequest = frames(async (ctx) => {
   const { searchParams, state } = ctx;
   const value = searchParams.value;
 
-  // Initialize state, defaulting to 'entree' if undefined
+  // Initialize state, defaulting to 'start' if undefined
   let entree = state?.entree;
   let side = state?.side;
   let drink = state?.drink;
-  let step = state?.step ?? "entree"; // Start at 'entree'
-
+  let step = state?.step ?? "start"; // Start at 'start' now
   let imageText = "";
   let buttons: JSX.Element[] = [];
-  let nextStep: "entree" | "side" | "drink" | "done" = step; // Initialize nextStep
+  let nextStep: "start" | "entree" | "side" | "drink" | "done" = step; // Include 'start'
 
   // Adjusted initial step logic
-  if (step === "entree" && !value) { //If on entree and no value, show the first message.
-    imageText = `🍔 Welcome to Wendy’s!\nChoose your entrée:`;
+  if (step === "start") {
+    imageText = "👋 Ready to order some Wendy's?";
+    buttons = [
+      <Button action="post" target={{ query: { value: "begin_order" } }}>
+        Ready to Order?
+      </Button>,
+    ];
+    nextStep = "start"; // Remain on start until the button is clicked.
+  } else if (step === "entree") {
+    if (value) {
+      entree = value;
+      nextStep = "side";
+    }
+    imageText = value
+      ? `🔥 You chose the ${value}!\nPick a side:`
+      : `🍔 Welcome to Wendy’s!\nChoose your entrée:`;
+
     buttons = [
       <Button action="post" target={{ query: { value: "Fries" } }}>Fries</Button>,
       <Button action="post" target={{ query: { value: "Baconator Fries" } }}>Baconator Fries</Button>,
       <Button action="post" target={{ query: { value: "Chili" } }}>Chili</Button>,
-    ];
-    nextStep = "entree"; // Ensure nextStep is entree
-  } else if (step === "entree") { //If on entree and there is a value (meaning they selected)
-    entree = value;
-    nextStep = "side";
-    imageText = `🔥 You chose the ${value}!\nPick a side:`;
-     buttons = [
-      <Button action="post" target={{ query: { value: "Coke" } }}>Coke</Button>,
-      <Button action="post" target={{ query: { value: "Strawberry Lemonade" } }}>Strawberry Lemonade</Button>,
-      <Button action="post" target={{ query: { value: "Vanilla Frosty" } }}>Vanilla Frosty</Button>,
     ];
   } else if (step === "side") {
     if (value) {
@@ -76,6 +80,11 @@ const handleRequest = frames(async (ctx) => {
     } else {
       nextStep = "done"; // Keep step as "done" to display order until "Start Over"
     }
+  }
+
+  // Transition from 'start' to 'entree'
+  if (value === "begin_order") {
+    nextStep = "entree";
   }
 
   // Debugging output (remove in production)
