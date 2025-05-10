@@ -97,14 +97,18 @@ const handleRequest = frames(async (ctx) => {
     ];
 
   } else if (step === "done") {
-    imageText = `✅ Your Wendy’s order:\n🍔 Entree: ${entree}\n🍟 Side: ${side}\n🥤 Drink: ${drink}\n\nEnjoy, legend.`;
-    buttons = [
-      <Button action="post" target={{ query: { value: "start_over" } }}>
-        Start Over
-      </Button>,
-    ];
-    nextStep = "done"; // stay here until they reset
+  // if they clicked “Start Over”, reset to entree
+  if (raw === "start_over") {
+    nextStep = "entree";
+    entree = side = drink = undefined;
   }
+  imageText = `✅ Your order:\n🍔 ${entree}\n🍟 ${side}\n🥤 ${drink}`;
+  buttons = [
+    <Button action="post" target={{ query: { value: "start_over" } }}>
+      Start Over
+    </Button>,
+  ];
+}
 
   return {
     image: <div tw="text-center whitespace-pre-wrap">{imageText}</div>,
