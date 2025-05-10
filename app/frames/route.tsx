@@ -4,18 +4,17 @@ import { frames } from "./frames";
 
 const handleRequest = frames(async (ctx) => {
   const { searchParams, state } = ctx;
-
-  const step = state?.step ?? "entree";
   const value = searchParams.value;
 
-  // Current order state
-  let entree = state.entree;
-  let side = state.side;
-  let drink = state.drink;
+  // Initialize state, defaulting to 'entree' if undefined
+  let entree = state?.entree;
+  let side = state?.side;
+  let drink = state?.drink;
+  let step = state?.step ?? "entree"; // Start at 'entree'
 
   let imageText = "";
   let buttons: JSX.Element[] = [];
-  let nextStep: "entree" | "side" | "drink" | "done" = step;
+  let nextStep: "entree" | "side" | "drink" | "done" = step; // Initialize nextStep
 
   if (step === "entree") {
     if (value) {
@@ -58,20 +57,29 @@ const handleRequest = frames(async (ctx) => {
       : `🥤 Choose your drink:`;
 
     buttons = [
-      <Button action="post" target={{ query: { value: "Start Over" } }}>Start Over</Button>,
+      <Button action="post" target={{ query: { value: "start_over" } }}>Start Over</Button>,
     ];
   } else if (step === "done") {
     imageText = `✅ Your Wendy’s order:\n🍔 Entree: ${entree}\n🍟 Side: ${side}\n🥤 Drink: ${drink}\n\nEnjoy, legend.`;
     buttons = [
-      <Button action="post">Start Over</Button>,
+      <Button action="post" target={{ query: { value: "start_over" } }}>Start Over</Button>,
     ];
 
-    // Reset everything
-    nextStep = "entree";
-    entree = undefined;
-    side = undefined;
-    drink = undefined;
+    // Reset only if "Start Over" is clicked
+    if (value === "start_over") {
+      nextStep = "entree";
+      entree = undefined;
+      side = undefined;
+      drink = undefined;
+    } else {
+      nextStep = "done"; // Keep step as "done" to display order until "Start Over"
+    }
   }
+
+  // Debugging output (remove in production)
+  console.log("Current State:", { step, entree, side, drink });
+  console.log("Next Step:", nextStep);
+  console.log("Value:", value);
 
   return {
     image: <div tw="text-center whitespace-pre-wrap">{imageText}</div>,
