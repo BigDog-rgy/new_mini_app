@@ -12,11 +12,14 @@ const handleRequest = frames(async (ctx) => {
       </span>
     ),
     buttons: [
-      <Button action="post" target={{ query: { value: "Yes" } }}>
-        Say Yes
+      <Button action="post" target={{ query: { value: "Hamburger" } }}>
+        I'd Like a Hamburger
       </Button>,
-      <Button action="post" target={{ query: { value: "No" } }}>
-        Say No
+      <Button action="post" target={{ query: { value: "Chicken" } }}>
+        I'd Like a Chicken Sandwich
+      </Button>,
+      <Button action="post" target={{ query: { value: "Fries" } }}>
+        I'd Like Fries
       </Button>,
     ],
   };
