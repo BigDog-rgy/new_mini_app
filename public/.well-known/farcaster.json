@@ -1,4 +1,9 @@
 {
+  "accountAssociation": {
+    "header": "eyJmaWQiOjU0MDg5MCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDgzRDIwZDUwYTgxYTJEQkE2MTE1OTU5NDlBOTVkMWU3MDkwOTFFNjgifQ",
+    "payload": "eyJkb21haW4iOiJuZXctbWluaS1hcHAtcHNpLnZlcmNlbC5hcHAifQ",
+    "signature": "MHhlMTlmNjI3Y2Q1ZGY0ZmY2NGIwNzZhMGQ0Y2YwYjE4MmM0Y2E1ZjkxZTdkYzBmZmZlMDkwYzk5NDVkYTIwYTU4NmVkODYxN2M0ZTQyMDBmNmJjMDU2OTQ0ZjQ0ODMyZDY1YzVhNGI1Y2U4MTkyMGEzMzk2NTI1MTZmZDQyNDIzNzFj"
+  },
   "frame": {
     "version": "1",
     "name": "Mini Poll Frame",
