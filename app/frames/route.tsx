@@ -8,24 +8,31 @@ const handleRequest = frames(async (ctx) => {
 
   const character = pickedCharacter ?? state.character;
 
+  const characterImages: Record<string, string> = {
+  "Newbie Cashier": "/wendys_emp_1.png",
+  "Veteran Fry Cook": "/wendys_emp_2.png",
+  "Shift Manager": "/wendys_emp_3.png",
+};
+
+
   let imageText = "";
   let buttons = [];
 
   if (!character) {
-    imageText = "🧑‍🍳 Choose your Wendy’s alter ego:";
+    imageText = "🧑‍🍳 Choose your character:";
     buttons = [
-      <Button action="post" target={{ query: { character: "Newbie Cashier" } }}>
-        Newbie Cashier
+      <Button action="post" target={{ query: { character: "Newt" } }}>
+        Newt
       </Button>,
-      <Button action="post" target={{ query: { character: "Veteran Fry Cook" } }}>
-        Veteran Fry Cook
+      <Button action="post" target={{ query: { character: "Munchies" } }}>
+        Munchies
       </Button>,
-      <Button action="post" target={{ query: { character: "Shift Manager" } }}>
-        Shift Manager
+      <Button action="post" target={{ query: { character: "Carly" } }}>
+        Carly
       </Button>,
     ];
   } else {
-    imageText = `✅ Character selected: ${character}`;
+    imageText = `✅ You picked: ${character}`;
     buttons = [
       <Button action="post" target={{ query: { character: "" } }}>
         Pick Again
@@ -34,7 +41,12 @@ const handleRequest = frames(async (ctx) => {
   }
 
   return {
-    image: <div tw="text-center whitespace-pre-wrap">{imageText}</div>,
+    image: (
+      <div tw="flex flex-col items-center text-center whitespace-pre-wrap">
+        <img src={characterImages[character] ?? ""} alt="Character" width="300" height="300" />
+        <span tw="mt-4">{imageText}</span>
+      </div>
+    ),
     buttons,
     state: {
       step: "pickCharacter",
