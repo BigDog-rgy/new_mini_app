@@ -9,11 +9,10 @@ const handleRequest = frames(async (ctx) => {
   const character = pickedCharacter ?? state.character;
 
   const characterImages: Record<string, string> = {
-  "Newbie Cashier": "/wendys_emp_1.png",
-  "Veteran Fry Cook": "/wendys_emp_2.png",
-  "Shift Manager": "/wendys_emp_3.png",
+  "Newbie Cashier": "https://new-mini-app-psi.vercel.app/wendys_emp_1.png",
+  "Veteran Fry Cook": "https://new-mini-app-psi.vercel.app/wendys_emp_2.png",
+  "Shift Manager": "https://new-mini-app-psi.vercel.app/wendys_emp_3.png",
 };
-
 
   let imageText = "";
   let buttons = [];
@@ -41,12 +40,7 @@ const handleRequest = frames(async (ctx) => {
   }
 
   return {
-    image: (
-      <div tw="flex flex-col items-center text-center whitespace-pre-wrap">
-        <img src={characterImages[character] ?? ""} alt="Character" width="300" height="300" />
-        <span tw="mt-4">{imageText}</span>
-      </div>
-    ),
+    image: characterImages[character] ?? "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
     buttons,
     state: {
       step: "pickCharacter",
