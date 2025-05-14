@@ -9,9 +9,9 @@ const handleRequest = frames(async (ctx) => {
   const character = pickedCharacter ?? state.character;
 
   const characterImages: Record<string, string> = {
-  "Newbie Cashier": "https://new-mini-app-psi.vercel.app/wendys_emp_1.webp",
-  "Veteran Fry Cook": "https://new-mini-app-psi.vercel.app/wendys_emp_2.webp",
-  "Shift Manager": "https://new-mini-app-psi.vercel.app/wendys_emp_3.webp",
+  "Newt": "https://new-mini-app-psi.vercel.app/wendys_emp_1.webp",
+  "Munchies": "https://new-mini-app-psi.vercel.app/wendys_emp_2.webp",
+  "Carly": "https://new-mini-app-psi.vercel.app/wendys_emp_3.webp",
 };
 
   let imageText = "";
