@@ -20,8 +20,8 @@ const characterImages: Record<string, string> = {
 const handleRequest = frames(async (ctx) => {
   const { searchParams, state } = ctx;
   const selectedCharacter = searchParams.character ?? state.character;
-  const choice            = searchParams.choice;
-  const step              = state?.step ?? "pickCharacter";
+  const choice = searchParams.choice;
+  const step = state?.step ?? "pickCharacter";
 
   // === STEP: PICK CHARACTER ===
 if (step === "pickCharacter") {
@@ -57,35 +57,6 @@ if (step === "pickCharacter") {
     },
   };
 }
-
-  // === 2) CONFIRM CHARACTER SCREEN ===
-  if (step === "confirmCharacter") {
-    // if they hit “Change Character” (character=""), bounce back
-    if (!selectedCharacter) {
-      return {
-        image: "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
-        buttons: [
-          <Button action="post" target={{ query: { character: "Newt" } }}>Newt</Button>,
-          <Button action="post" target={{ query: { character: "Munchies" } }}>Munchies</Button>,
-          <Button action="post" target={{ query: { character: "Carly" } }}>Carly</Button>,
-        ],
-        state: { step: "pickCharacter" },
-      };
-    }
-
-    // **Here’s your two-button view:**
-    return {
-      image: characterImages[selectedCharacter]!,
-      buttons: [
-        <Button action="post" target={{ query: { choice: "start" } }}>Start Your Shift</Button>,
-        <Button action="post" target={{ query: { character: "" } }}>Change Character</Button>,
-      ],
-      state: {
-        step:      "confirmCharacter",
-        character: selectedCharacter,
-      },
-    };
-  }
 
   // === 3) STORY SCREEN ===
   if (step === "story" && selectedCharacter && choice) {
