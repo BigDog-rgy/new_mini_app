@@ -23,32 +23,40 @@ const handleRequest = frames(async (ctx) => {
   const choice            = searchParams.choice;
   const step              = state?.step ?? "pickCharacter";
 
-  // === 1) PICK CHARACTER SCREEN ===
-  if (step === "pickCharacter") {
-    if (!selectedCharacter) {
-      return {
-        image: "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
-        buttons: [
-          <Button action="post" target={{ query: { character: "Newt" } }}>Newt</Button>,
-          <Button action="post" target={{ query: { character: "Munchies" } }}>Munchies</Button>,
-          <Button action="post" target={{ query: { character: "Carly" } }}>Carly</Button>,
-        ],
-        state: { step: "pickCharacter" },
-      };
-    }
-
-    // once a character is picked, go to confirmCharacter
+  // === STEP: PICK CHARACTER ===
+if (step === "pickCharacter") {
+  // No character chosen yet → show selection
+  if (!selectedCharacter) {
     return {
-      image: characterImages[selectedCharacter]!,
+      image: "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
       buttons: [
-        <Button action="post" target={{ query: { character: "" } }}>Change Character</Button>
+        <Button action="post" target={{ query: { character: "Newt" } }}>Newt</Button>,
+        <Button action="post" target={{ query: { character: "Munchies" } }}>Munchies</Button>,
+        <Button action="post" target={{ query: { character: "Carly" } }}>Carly</Button>,
       ],
-      state: {
-        step:      "confirmCharacter",
-        character: selectedCharacter,
-      },
+      state: { step: "pickCharacter" },
     };
   }
+
+  // Character was picked → immediately show BOTH buttons:
+  //  1) Start Your Shift → sends choice="start"
+  //  2) Change Character → clears character
+  return {
+    image: characterImages[selectedCharacter]!,
+    buttons: [
+      <Button action="post" target={{ query: { choice: "start", character: selectedCharacter } }}>
+        Start Your Shift
+      </Button>,
+      <Button action="post" target={{ query: { character: "" } }}>
+        Change Character
+      </Button>,
+    ],
+    state: {
+      step:      "confirmCharacter",
+      character: selectedCharacter,
+    },
+  };
+}
 
   // === 2) CONFIRM CHARACTER SCREEN ===
   if (step === "confirmCharacter") {
