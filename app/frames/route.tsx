@@ -64,23 +64,65 @@ const handleRequest = frames(async (ctx) => {
     const isAfterFirstChoice = newPath.length === 1;
 
     if (isFirstScene) {
-      return {
-        image: "https://new-mini-app-psi.vercel.app/scene_1.webp", // placeholder
-        buttons: [
-          <Button action="post" target={{ query: { choice: "GreetHer" } }}>
-            Greet the customer
-          </Button>,
-          <Button action="post" target={{ query: { choice: "HideInBack" } }}>
-            Hide in the back
-          </Button>,
-        ],
-        state: {
-          step: "story",
-          character,
-          path: newPath,
-        },
-      };
-    }
+  // Dummy scene logic based on character
+  let image = "";
+  let text = "";
+  let buttons = [];
+
+  if (character === "Newt") {
+    image = "https://new-mini-app-psi.vercel.app/scene_newt_1.webp";
+    text = "Newt nervously wipes down the counter. A group of teens walks in laughing.";
+    buttons = [
+      <Button action="post" target={{ query: { choice: "GreetQuietly" } }}>
+        Greet them quietly
+      </Button>,
+      <Button action="post" target={{ query: { choice: "HideInFreezer" } }}>
+        Hide in the freezer
+      </Button>,
+    ];
+  } else if (character === "Munchies") {
+    image = "https://new-mini-app-psi.vercel.app/scene_munchies_1.webp";
+    text = "Munchies sighs, clocking in late again. A drive-thru order barks through the headset.";
+    buttons = [
+      <Button action="post" target={{ query: { choice: "YellBack" } }}>
+        Yell back at them
+      </Button>,
+      <Button action="post" target={{ query: { choice: "IgnoreIt" } }}>
+        Ignore it completely
+      </Button>,
+    ];
+  } else if (character === "Carly") {
+    image = "https://new-mini-app-psi.vercel.app/scene_carly_1.webp";
+    text = "Carly bursts into the kitchen, smiling too wide. 'We're gonna crush this lunch rush!' she shouts.";
+    buttons = [
+      <Button action="post" target={{ query: { choice: "StartRanting" } }}>
+        Start ranting about motivation
+      </Button>,
+      <Button action="post" target={{ query: { choice: "TryToOrganize" } }}>
+        Try to organize the fry station
+      </Button>,
+    ];
+  } else {
+    // Just in case character is invalid
+    image = "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png";
+    text = "Something broke. Try again.";
+    buttons = [
+      <Button action="post" target={{ query: { character: "" } }}>
+        Reset
+      </Button>,
+    ];
+  }
+
+  return {
+    image,
+    buttons,
+    state: {
+      step: "story",
+      character,
+      path: newPath,
+    },
+  };
+}
 
     if (isAfterFirstChoice) {
       const previousChoice = newPath[0];
