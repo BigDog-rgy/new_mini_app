@@ -5,9 +5,9 @@ import sceneData from "./../../scenes.json" assert { type: "json" };
 export const runtime = "edge";
 
 const characterImages: Record<string, string> = {
-  Newt: "https://new-mini-app-psi.vercel.app/wendys_emp_1.webp",
-  Munchies: "https://new-mini-app-psi.vercel.app/wendys_emp_2.webp",
-  Carly: "https://new-mini-app-psi.vercel.app/wendys_emp_3.webp",
+  Newt: "/wendys_emp_1.webp",      // ✅ relative path served from /public
+  Munchies: "/wendys_emp_2.webp",
+  Carly: "/wendys_emp_3.webp",
 };
 
 export async function GET(req: NextRequest) {
