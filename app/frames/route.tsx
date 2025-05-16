@@ -20,11 +20,12 @@ const characterImages: Record<string, string> = {
 const handleRequest = frames(async (ctx) => {
   const { searchParams, state } = ctx;
   const selectedCharacter = searchParams.character ?? state.character;
-  const step = state?.step ?? "pickCharacter";
+  const choice            = searchParams.choice;
+  const step              = state?.step ?? "pickCharacter";
 
   // === STEP: PICK CHARACTER ===
   if (step === "pickCharacter") {
-    // No character chosen yet
+    // No character chosen yet → show selection
     if (!selectedCharacter) {
       return {
         image: "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
@@ -37,23 +38,36 @@ const handleRequest = frames(async (ctx) => {
       };
     }
 
-    // Character picked → show confirmation screen
+    // Character picked → show their image + "Pick Again"
     return {
       image: characterImages[selectedCharacter]!,
       buttons: [
-        <Button action="post" target={{ query: { character: "" } }}>Pick Again</Button>,
+        <Button action="post" target={{ query: { character: "" } }}>Pick Again</Button>
       ],
       state: {
         step:      "confirmCharacter",
-        character: selectedCharacter,
+        character: selectedCharacter
       },
     };
   }
 
   // === STEP: CONFIRM CHARACTER → LOAD FIRST SCENE ===
-  if (step === "confirmCharacter" && selectedCharacter) {
+  if (step === "confirmCharacter") {
+    // If they hit “Pick Again” (character="") bounce back
+    if (!selectedCharacter) {
+      return {
+        image: "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
+        buttons: [
+          <Button action="post" target={{ query: { character: "Newt" } }}>Newt</Button>,
+          <Button action="post" target={{ query: { character: "Munchies" } }}>Munchies</Button>,
+          <Button action="post" target={{ query: { character: "Carly" } }}>Carly</Button>,
+        ],
+        state: { step: "pickCharacter" },
+      };
+    }
+
     const sceneKey = `${selectedCharacter}_start`;
-    const scene = scenes[sceneKey];
+    const scene    = scenes[sceneKey];
 
     if (!scene) {
       return {
@@ -61,7 +75,7 @@ const handleRequest = frames(async (ctx) => {
         buttons: [
           <Button action="post" target={{ query: { character: "" } }}>
             Pick Again
-          </Button>,
+          </Button>
         ],
         state: { step: "pickCharacter" },
       };
@@ -75,9 +89,9 @@ const handleRequest = frames(async (ctx) => {
         </Button>
       )),
       state: {
-        step:      "story",             // you can rename or reuse confirmCharacter if you like
+        step:      "story",
         character: selectedCharacter,
-        path:      ["start"],           // optional, for future branching
+        path:      ["start"],
       },
     };
   }
@@ -86,11 +100,11 @@ const handleRequest = frames(async (ctx) => {
   return {
     image: "https://dummyimage.com/1200x630/000/fff&text=Something+Went+Wrong",
     buttons: [
-      <Button action="post" target={{ query: { character: "" } }}>Restart</Button>,
+      <Button action="post" target={{ query: { character: "" } }}>Restart</Button>
     ],
     state: { step: "pickCharacter" },
   };
 });
 
-export const GET = handleRequest;
+export const GET  = handleRequest;
 export const POST = handleRequest;
