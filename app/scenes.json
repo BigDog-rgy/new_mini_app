@@ -1,18 +1,76 @@
 {
   "Newt_start": {
-    "image": "https://dummyimage.com/1200x630/ffcc00/000000&text=Newt+Scene+1",
-    "text": "Newt clocks in for his first shift. The restaurant smells like fryer oil and teenage sweat.",
+    "image": "https://dummyimage.com/1200x630/ffcc00/000000&text=Newt+Start",
+    "text": "Newt clocks in and takes a breath. Time to fry or die.",
     "options": [
-      { "id": "GreetQuietly", "label": "Greet the manager quietly" },
-      { "id": "VomitNerves", "label": "Puke nervously in the mop bucket" }
+      { "id": "GreetQuietly", "label": "Greet the manager" },
+      { "id": "VomitNerves", "label": "Vomit nervously" }
     ]
   },
   "Newt_GreetQuietly": {
-    "image": "https://dummyimage.com/1200x630/0099ff/ffffff&text=Newt+Scene+2",
-    "text": "The manager barely notices. A Karen marches in with her hands already on her hips.",
+    "image": "https://dummyimage.com/1200x630/ffcc00/000000&text=Newt+Scene+2",
+    "text": "The manager nods. A Karen storms in.",
     "options": [
-      { "id": "OfferApology", "label": "Apologize preemptively" },
-      { "id": "HideInFreezer", "label": "Retreat to freezer" }
+      { "id": "OfferApology", "label": "Apologize fast" },
+      { "id": "HideInFreezer", "label": "Hide in freezer" }
+    ]
+  },
+  "Newt_VomitNerves": {
+    "image": "https://dummyimage.com/1200x630/ffcc00/000000&text=Newt+Scene+2b",
+    "text": "You puke. The manager sighs.",
+    "options": [
+      { "id": "CleanItUp", "label": "Clean it up" },
+      { "id": "BlameCustomer", "label": "Blame the customer" }
+    ]
+  },
+
+  "Munchies_start": {
+    "image": "https://dummyimage.com/1200x630/00cc99/ffffff&text=Munchies+Start",
+    "text": "Munchies strolls in stoned. Time for the grill grind.",
+    "options": [
+      { "id": "CrankTunes", "label": "Crank tunes in kitchen" },
+      { "id": "NapInBooth", "label": "Nap in back booth" }
+    ]
+  },
+  "Munchies_CrankTunes": {
+    "image": "https://dummyimage.com/1200x630/00cc99/ffffff&text=Munchies+Scene+2",
+    "text": "Music slaps. Manager walks in.",
+    "options": [
+      { "id": "TurnItOff", "label": "Turn it off" },
+      { "id": "ChallengeToRapBattle", "label": "Challenge to rap battle" }
+    ]
+  },
+  "Munchies_NapInBooth": {
+    "image": "https://dummyimage.com/1200x630/00cc99/ffffff&text=Munchies+Scene+2b",
+    "text": "You nap like a god. Karen spots you.",
+    "options": [
+      { "id": "PlayDead", "label": "Play dead" },
+      { "id": "OfferFries", "label": "Bribe with fries" }
+    ]
+  },
+
+  "Carly_start": {
+    "image": "https://dummyimage.com/1200x630/ff66cc/000000&text=Carly+Start",
+    "text": "Carly flips her braid and logs into the cash register.",
+    "options": [
+      { "id": "FlirtWithCustomer", "label": "Flirt with customer" },
+      { "id": "CountPennies", "label": "Count pennies loudly" }
+    ]
+  },
+  "Carly_FlirtWithCustomer": {
+    "image": "https://dummyimage.com/1200x630/ff66cc/000000&text=Carly+Scene+2",
+    "text": "The customer blushes. Manager frowns.",
+    "options": [
+      { "id": "DoubleDown", "label": "Double down" },
+      { "id": "Apologize", "label": "Apologize" }
+    ]
+  },
+  "Carly_CountPennies": {
+    "image": "https://dummyimage.com/1200x630/ff66cc/000000&text=Carly+Scene+2b",
+    "text": "A Karen is confused by the math.",
+    "options": [
+      { "id": "ThrowRolls", "label": "Throw coin rolls" },
+      { "id": "StartLecture", "label": "Lecture on inflation" }
     ]
   }
 }

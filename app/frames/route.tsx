@@ -26,8 +26,8 @@ const handleRequest = frames(async (ctx) => {
   const step = state?.step ?? "pickCharacter";
   const path = state?.path ?? [];
   const newPath = choice ? [...path, choice] : path;
-const sceneKey = [character, ...newPath].join("_");
-const scene = scenes[sceneKey];
+  const sceneKey = `${character}_${choice ?? "start"}`;
+
 
   // === STEP: PICK CHARACTER ===
   if (step === "pickCharacter") {
@@ -58,10 +58,10 @@ const scene = scenes[sceneKey];
         </Button>,
       ],
       state: {
-        step: "story",
-        character,
-        path: [],
-      },
+      step: "story",
+      character,
+      path: [...path, choice ?? "start"],  // optional: still useful for tracking
+    },
     };
   }
 
