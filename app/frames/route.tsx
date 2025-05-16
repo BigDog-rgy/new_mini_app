@@ -58,6 +58,35 @@ if (step === "pickCharacter") {
   };
 }
 
+  // === 2) CONFIRM CHARACTER SCREEN ===
+  if (step === "confirmCharacter") {
+    // if they hit “Change Character” (character=""), bounce back
+    if (!selectedCharacter) {
+      return {
+        image: "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
+        buttons: [
+          <Button action="post" target={{ query: { character: "Newt" } }}>Newt</Button>,
+          <Button action="post" target={{ query: { character: "Munchies" } }}>Munchies</Button>,
+          <Button action="post" target={{ query: { character: "Carly" } }}>Carly</Button>,
+        ],
+        state: { step: "pickCharacter" },
+      };
+    }
+
+    // **Here’s your two-button view:**
+    return {
+      image: characterImages[selectedCharacter]!,
+      buttons: [
+        <Button action="post" target={{ query: { choice: "start" } }}>Start Your Shift</Button>,
+        <Button action="post" target={{ query: { character: "" } }}>Change Character</Button>,
+      ],
+      state: {
+        step:      "confirmCharacter",
+        character: selectedCharacter,
+      },
+    };
+  }
+
   // === 3) STORY SCREEN ===
   if (step === "story" && selectedCharacter && choice) {
     const sceneKey = `${selectedCharacter}_${choice}`;  // e.g. "Newt_start"
