@@ -1,12 +1,20 @@
 /* eslint-disable react/jsx-key */
 import { Button } from "frames.js/next";
 import { frames } from "./frames";
-//import sceneData from "../scenes.json" assert { type: "json" };
+import sceneData from "../scenes.json" assert { type: "json" };
+
+type Scene = {
+  image:   string;
+  text:    string;
+  options: { id: string; label: string }[];
+};
+
+const scenes: Record<string, Scene> = sceneData;
 
 const characterImages: Record<string, string> = {
-  "Newt": "https://new-mini-app-psi.vercel.app/wendys_emp_1.webp",
-  "Munchies": "https://new-mini-app-psi.vercel.app/wendys_emp_2.webp",
-  "Carly": "https://new-mini-app-psi.vercel.app/wendys_emp_3.webp",
+  Newt:     "https://new-mini-app-psi.vercel.app/wendys_emp_1.webp",
+  Munchies: "https://new-mini-app-psi.vercel.app/wendys_emp_2.webp",
+  Carly:    "https://new-mini-app-psi.vercel.app/wendys_emp_3.webp",
 };
 
 const handleRequest = frames(async (ctx) => {
@@ -14,43 +22,73 @@ const handleRequest = frames(async (ctx) => {
   const selectedCharacter = searchParams.character ?? state.character;
   const step = state?.step ?? "pickCharacter";
 
-
   // === STEP: PICK CHARACTER ===
   if (step === "pickCharacter") {
-  // Case: No character picked yet → show selection screen
-  if (!selectedCharacter) {
+    // No character chosen yet
+    if (!selectedCharacter) {
+      return {
+        image: "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
+        buttons: [
+          <Button action="post" target={{ query: { character: "Newt" } }}>Newt</Button>,
+          <Button action="post" target={{ query: { character: "Munchies" } }}>Munchies</Button>,
+          <Button action="post" target={{ query: { character: "Carly" } }}>Carly</Button>,
+        ],
+        state: { step: "pickCharacter" },
+      };
+    }
+
+    // Character picked → show confirmation screen
     return {
-      image: "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
+      image: characterImages[selectedCharacter]!,
       buttons: [
-        <Button action="post" target={{ query: { character: "Newt" } }}>Newt</Button>,
-        <Button action="post" target={{ query: { character: "Munchies" } }}>Munchies</Button>,
-        <Button action="post" target={{ query: { character: "Carly" } }}>Carly</Button>,
+        <Button action="post" target={{ query: { character: "" } }}>Pick Again</Button>,
       ],
-      state: { step: "pickCharacter" },
+      state: {
+        step:      "confirmCharacter",
+        character: selectedCharacter,
+      },
     };
   }
 
-  // Case: Character was just picked → move to confirmation
-  return {
-    image: characterImages[selectedCharacter] ?? "https://dummyimage.com/1200x630/000/fff&text=Unknown+Character",
-    buttons: [
-      <Button action="post" target={{ query: { character: "" } }}>Pick Again</Button>
-    ],
-    state: {
-      step: "confirmCharacter",
-      character: selectedCharacter
-    }
-  };
-}
+  // === STEP: CONFIRM CHARACTER → LOAD FIRST SCENE ===
+  if (step === "confirmCharacter" && selectedCharacter) {
+    const sceneKey = `${selectedCharacter}_start`;
+    const scene = scenes[sceneKey];
 
+    if (!scene) {
+      return {
+        image: "https://dummyimage.com/1200x630/ff4444/ffffff&text=Scene+Not+Found",
+        buttons: [
+          <Button action="post" target={{ query: { character: "" } }}>
+            Pick Again
+          </Button>,
+        ],
+        state: { step: "pickCharacter" },
+      };
+    }
+
+    return {
+      image: scene.image,
+      buttons: scene.options.map((opt) => (
+        <Button action="post" target={{ query: { choice: opt.id } }}>
+          {opt.label}
+        </Button>
+      )),
+      state: {
+        step:      "story",             // you can rename or reuse confirmCharacter if you like
+        character: selectedCharacter,
+        path:      ["start"],           // optional, for future branching
+      },
+    };
+  }
+
+  // === FALLBACK ===
   return {
     image: "https://dummyimage.com/1200x630/000/fff&text=Something+Went+Wrong",
     buttons: [
-      <Button action="post" target={{ query: { character: "" } }}> Restart </Button>,
+      <Button action="post" target={{ query: { character: "" } }}>Restart</Button>,
     ],
-    state: {
-      step: "pickCharacter",
-    },
+    state: { step: "pickCharacter" },
   };
 });
 
