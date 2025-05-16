@@ -1,26 +1,23 @@
 {
   "Newt_start": {
     "image": "https://dummyimage.com/1200x630/ffcc00/000000&text=Newt+Start",
-    "text": "Newt clocks in for his first shift. The fryer’s lit and the clock’s tickin’.",
+    "text": "Newt clocks in for his first shift.",
     "options": [
       { "id": "GreetQuietly", "label": "Greet the manager quietly" },
-      { "id": "VomitNerves",  "label": "Puke nervously in mop bucket" }
+      { "id": "LunchRush", "label": "Brace for lunch rush", "next": "shared_LunchRush" }
     ]
   },
-  "Munchies_start": {
-    "image": "https://dummyimage.com/1200x630/00cc99/ffffff&text=Munchies+Start",
-    "text": "Munchies strolls to the counter, eyes half-closed but ready to fry.",
+  "shared_LunchRush": {
+    "image": "https://dummyimage.com/1200x630/333/fff&text=Lunch+Rush",
+    "text": "The restaurant explodes with hungry customers. It's chaos!",
     "options": [
-      { "id": "CrankTunes",     "label": "Crank the tunes" },
-      { "id": "NapInBooth",     "label": "Nap in the back booth" }
+      { "id": "Panic", "label": "Panic and hide" },
+      { "id": "Hustle", "label": "Hustle through it" }
     ]
   },
-  "Carly_start": {
-    "image": "https://dummyimage.com/1200x630/ff66cc/000000&text=Carly+Start",
-    "text": "Carly tightens her braid and greets customers with a killer smile.",
-    "options": [
-      { "id": "FlirtWithCustomer", "label": "Flirt with the first customer" },
-      { "id": "CountPennies",      "label": "Count pennies loudly" }
-    ]
+  "Newt_Panic": {
+    "image": "https://dummyimage.com/1200x630/ff3333/fff&text=Fired",
+    "text": "Newt hides in the freezer and is promptly fired. Maybe Burger King is hiring.",
+    "isEnding": true
   }
 }
