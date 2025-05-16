@@ -1,0 +1,18 @@
+{
+  "Newt_start": {
+    "image": "https://dummyimage.com/1200x630/ffcc00/000000&text=Newt+Scene+1",
+    "text": "Newt clocks in for his first shift. The restaurant smells like fryer oil and teenage sweat.",
+    "options": [
+      { "id": "GreetQuietly", "label": "Greet the manager quietly" },
+      { "id": "VomitNerves", "label": "Puke nervously in the mop bucket" }
+    ]
+  },
+  "Newt_GreetQuietly": {
+    "image": "https://dummyimage.com/1200x630/0099ff/ffffff&text=Newt+Scene+2",
+    "text": "The manager barely notices. A Karen marches in with her hands already on her hips.",
+    "options": [
+      { "id": "OfferApology", "label": "Apologize preemptively" },
+      { "id": "HideInFreezer", "label": "Retreat to freezer" }
+    ]
+  }
+}

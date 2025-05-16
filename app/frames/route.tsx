@@ -1,6 +1,17 @@
 /* eslint-disable react/jsx-key */
 import { Button } from "frames.js/next";
 import { frames } from "./frames";
+import sceneData from "../scenes.json" assert { type: "json" };
+
+// Define the scene type
+type Scene = {
+  image: string;
+  text: string;
+  options: { id: string; label: string }[];
+  isEnding?: boolean;
+};
+
+const scenes: Record<string, Scene> = sceneData;
 
 const characterImages: Record<string, string> = {
   "Newt": "https://new-mini-app-psi.vercel.app/wendys_emp_1.webp",
@@ -10,14 +21,13 @@ const characterImages: Record<string, string> = {
 
 const handleRequest = frames(async (ctx) => {
   const { searchParams, state } = ctx;
-
-  const character = searchParams.character !== undefined
-    ? searchParams.character
-    : state.character;
-
+  const character = searchParams.character ?? state.character;
   const choice = searchParams.choice;
   const step = state?.step ?? "pickCharacter";
   const path = state?.path ?? [];
+  const newPath = choice ? [...path, choice] : path;
+const sceneKey = [character, ...newPath].join("_");
+const scene = scenes[sceneKey];
 
   // === STEP: PICK CHARACTER ===
   if (step === "pickCharacter") {
@@ -31,8 +41,8 @@ const handleRequest = frames(async (ctx) => {
         ],
         state: {
           step: "pickCharacter",
-          path,
           character: undefined,
+          path: [],
         },
       };
     }
@@ -55,118 +65,49 @@ const handleRequest = frames(async (ctx) => {
     };
   }
 
-  // === STEP: STORY SCENE ===
+  // === STORY SCENE ===
   if (step === "story") {
     const newPath = choice ? [...path, choice] : path;
+    const sceneKey = [character, ...newPath].join("_");
 
-    // Simple 1st scene hardcoded for now
-    const isFirstScene = newPath.length === 0;
-    const isAfterFirstChoice = newPath.length === 1;
+    const scene = scenes[sceneKey];
 
-    if (isFirstScene) {
-  // Dummy scene logic based on character
-  let image = "";
-  let text = "";
-  let buttons = [];
-
-  if (character === "Newt") {
-    image = "https://new-mini-app-psi.vercel.app/scene_newt_1.webp";
-    text = "Newt nervously wipes down the counter. A group of teens walks in laughing.";
-    buttons = [
-      <Button action="post" target={{ query: { choice: "GreetQuietly" } }}>
-        Greet them quietly
-      </Button>,
-      <Button action="post" target={{ query: { choice: "HideInFreezer" } }}>
-        Hide in the freezer
-      </Button>,
-    ];
-  } else if (character === "Munchies") {
-    image = "https://new-mini-app-psi.vercel.app/scene_munchies_1.webp";
-    text = "Munchies sighs, clocking in late again. A drive-thru order barks through the headset.";
-    buttons = [
-      <Button action="post" target={{ query: { choice: "YellBack" } }}>
-        Yell back at them
-      </Button>,
-      <Button action="post" target={{ query: { choice: "IgnoreIt" } }}>
-        Ignore it completely
-      </Button>,
-    ];
-  } else if (character === "Carly") {
-    image = "https://new-mini-app-psi.vercel.app/scene_carly_1.webp";
-    text = "Carly bursts into the kitchen, smiling too wide. 'We're gonna crush this lunch rush!' she shouts.";
-    buttons = [
-      <Button action="post" target={{ query: { choice: "StartRanting" } }}>
-        Start ranting about motivation
-      </Button>,
-      <Button action="post" target={{ query: { choice: "TryToOrganize" } }}>
-        Try to organize the fry station
-      </Button>,
-    ];
-  } else {
-    // Just in case character is invalid
-    image = "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png";
-    text = "Something broke. Try again.";
-    buttons = [
-      <Button action="post" target={{ query: { character: "" } }}>
-        Reset
-      </Button>,
-    ];
-  }
-
-  return {
-    image,
-    buttons,
-    state: {
-      step: "story",
-      character,
-      path: newPath,
-    },
-  };
-}
-
-    if (isAfterFirstChoice) {
-      const previousChoice = newPath[0];
+    if (!scene) {
       return {
-        image: "https://new-mini-app-psi.vercel.app/scene_2.webp", // placeholder
+        image: "https://dummyimage.com/1200x630/ff4444/ffffff&text=Scene+Not+Found",
         buttons: [
-          <Button action="post" target={{ query: { choice: "Commit" } }}>
-            Double down
-          </Button>,
-          <Button action="post" target={{ query: { choice: "Apologize" } }}>
-            Apologize
+          <Button action="post" target={{ query: { character: "" } }}>
+            Restart
           </Button>,
         ],
         state: {
-          step: "story",
-          character,
-          path: newPath,
+          step: "pickCharacter",
+          character: undefined,
+          path: [],
         },
       };
     }
 
-    // fallback once choices exceed 2 (pretend it’s the end)
     return {
-      image: "https://new-mini-app-psi.vercel.app/ending_default.webp",
-      buttons: [
-        <Button action="post" target={{ query: { character: "" } }}>
-          Start Over
-        </Button>,
-      ],
+      image: scene.image,
+      buttons: scene.options.map((opt) => (
+        <Button action="post" target={{ query: { choice: opt.id } }}>
+          {opt.label}
+        </Button>
+      )),
       state: {
-        step: "pickCharacter",
-        character: undefined,
-        path: [],
+        step: "story",
+        character,
+        path: newPath,
       },
     };
   }
 
-  // fallback default
+  // Fallback
   return {
-    image: "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
+    image: "https://dummyimage.com/1200x630/000/fff&text=Default+Fallback",
     buttons: [
-      <Button action="post" target={{ query: { character: "" } }}>
-        Reset
-      </Button>,
+      <Button action="post" target={{ query: { character: "" } }}>Reset</Button>
     ],
     state: {
       step: "pickCharacter",
