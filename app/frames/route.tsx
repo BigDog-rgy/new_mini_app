@@ -52,8 +52,9 @@ const handleRequest = frames(async (ctx) => {
   }
 
   // === STEP: CONFIRM CHARACTER → LOAD FIRST SCENE ===
+    // === STEP: CONFIRM CHARACTER → either confirm view or first JSON scene ===
   if (step === "confirmCharacter") {
-    // If they hit “Pick Again” (character="") bounce back
+    // 1) If they hit “Change Character” (character=""), bounce back to picker
     if (!selectedCharacter) {
       return {
         image: "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
@@ -66,32 +67,52 @@ const handleRequest = frames(async (ctx) => {
       };
     }
 
-    const sceneKey = `${selectedCharacter}_start`;
-    const scene    = scenes[sceneKey];
+    // 2) If they’ve clicked “Start Your Shift” (so choice === "start"), load that scene from JSON
+    if (choice) {
+      const sceneKey = `${selectedCharacter}_${choice}`;  // e.g. "Newt_start"
+      const scene    = scenes[sceneKey];
 
-    if (!scene) {
+      if (!scene) {
+        return {
+          image: "https://dummyimage.com/1200x630/ff4444/ffffff&text=Scene+Not+Found",
+          buttons: [
+            <Button action="post" target={{ query: { character: "" } }}>
+              Change Character
+            </Button>,
+          ],
+          state: { step: "pickCharacter" },
+        };
+      }
+
       return {
-        image: "https://dummyimage.com/1200x630/ff4444/ffffff&text=Scene+Not+Found",
-        buttons: [
-          <Button action="post" target={{ query: { character: "" } }}>
-            Pick Again
+        image: scene.image,
+        buttons: scene.options.map((opt) => (
+          <Button action="post" target={{ query: { choice: opt.id } }}>
+            {opt.label}
           </Button>
-        ],
-        state: { step: "pickCharacter" },
+        )),
+        state: {
+          step:      "story",            // now your real “story” step
+          character: selectedCharacter,
+          path:      [choice],           // keeps ["start"] for future branching
+        },
       };
     }
 
+    // 3) Otherwise (no choice yet) show the character & “Start Your Shift”
     return {
-      image: scene.image,
-      buttons: scene.options.map((opt) => (
-        <Button action="post" target={{ query: { choice: opt.id } }}>
-          {opt.label}
-        </Button>
-      )),
+      image: characterImages[selectedCharacter]!,
+      buttons: [
+        <Button action="post" target={{ query: { choice: "start" } }}>
+          Start Your Shift
+        </Button>,
+        <Button action="post" target={{ query: { character: "" } }}>
+          Change Character
+        </Button>,
+      ],
       state: {
-        step:      "story",
+        step:      "confirmCharacter",
         character: selectedCharacter,
-        path:      ["start"],
       },
     };
   }
