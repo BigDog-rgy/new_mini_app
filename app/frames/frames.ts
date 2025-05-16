@@ -1,7 +1,7 @@
 import { createFrames } from "frames.js/next";
 
 export type State = {
-  step: "pickCharacter" | "confirmCharacter" | "story";
+  step: "pickCharacter" | "story";
   character?: string;
   path?: string[];
 };
