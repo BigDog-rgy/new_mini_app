@@ -99,7 +99,7 @@ const handleRequest = frames(async (ctx) => {
 
     // 3) Regular branching scene
     return {
-      image: scene.image,
+      image: "https://new-mini-app-psi.vercel.app/api/image?scene=${sceneKey}",
       text: scene.text,
       buttons: scene.options.map((opt) =>
         <Button
