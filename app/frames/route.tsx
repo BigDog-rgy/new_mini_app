@@ -89,6 +89,7 @@ const handleRequest = frames(async (ctx) => {
     if (!scene.options || scene.options.length === 0 || scene.isEnding) {
       return {
         image: scene.image,
+        text: scene.text,
         buttons: [
           <Button action="post" target={{ query: { character: "" } }}>Pick New Employee</Button>
         ],
@@ -99,6 +100,7 @@ const handleRequest = frames(async (ctx) => {
     // 3) Regular branching scene
     return {
       image: scene.image,
+      text: scene.text,
       buttons: scene.options.map((opt) =>
         <Button
           action="post"
