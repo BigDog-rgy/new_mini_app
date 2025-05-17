@@ -1,7 +1,6 @@
 {
   "Newt_start": {
     "image": "https://dummyimage.com/1200x630/ffcc00/000000&text=Newt+Start",
-    "text": "Newt clocks in, shaking from a Red Bull overdose.",
     "options": [
       { "id": "GreetQuietly", "label": "Greet the manager quietly" },
       { "id": "LunchRush", "label": "Brace for lunch rush", "next": "shared_LunchRush" }
@@ -9,7 +8,6 @@
   },
   "Newt_GreetQuietly": {
     "image": "https://dummyimage.com/1200x630/ffcc00/000000&text=Manager+Stares",
-    "text": "The manager stares. A Karen storms in, waving a receipt.",
     "options": [
       { "id": "ArgueWithKaren", "label": "Argue with Karen" },
       { "id": "LunchRush", "label": "Let the lunch rush distract her", "next": "shared_LunchRush" }
@@ -17,13 +15,11 @@
   },
   "Newt_ArgueWithKaren": {
     "image": "https://dummyimage.com/1200x630/ff0000/ffffff&text=Fired",
-    "text": "You get fired for arguing with a customer. Newt's fast food career is over.",
     "isEnding": true
   },
 
   "Munchies_start": {
     "image": "https://dummyimage.com/1200x630/00cc99/ffffff&text=Munchies+Start",
-    "text": "Munchies clocks in, munching on a cold fry.",
     "options": [
       { "id": "CrankTunes", "label": "Crank up the kitchen tunes" },
       { "id": "LunchRush", "label": "Face the lunch rush", "next": "shared_LunchRush" }
@@ -31,7 +27,6 @@
   },
   "Munchies_CrankTunes": {
     "image": "https://dummyimage.com/1200x630/00cc99/ffffff&text=Manager+Is+Not+Amused",
-    "text": "The manager walks in. Music's too loud!",
     "options": [
       { "id": "ArgueWithManager", "label": "Argue back" },
       { "id": "LunchRush", "label": "Kill the tunes & work the rush", "next": "shared_LunchRush" }
@@ -39,13 +34,11 @@
   },
   "Munchies_ArgueWithManager": {
     "image": "https://dummyimage.com/1200x630/ff3333/ffffff&text=Fired",
-    "text": "You're out! Munchies gets sent home. Back to the couch.",
     "isEnding": true
   },
 
   "Carly_start": {
     "image": "https://dummyimage.com/1200x630/ff66cc/000000&text=Carly+Start",
-    "text": "Carly flips her braid and sharpens her nametag.",
     "options": [
       { "id": "FlirtWithCustomer", "label": "Flirt with the first customer" },
       { "id": "LunchRush", "label": "Head to the front for lunch rush", "next": "shared_LunchRush" }
@@ -53,7 +46,6 @@
   },
   "Carly_FlirtWithCustomer": {
     "image": "https://dummyimage.com/1200x630/ff66cc/000000&text=Awkward",
-    "text": "Awkward. The customer is her high school math teacher.",
     "options": [
       { "id": "MakeAScene", "label": "Double down on flirting" },
       { "id": "LunchRush", "label": "Flee to the kitchen", "next": "shared_LunchRush" }
@@ -61,13 +53,11 @@
   },
   "Carly_MakeAScene": {
     "image": "https://dummyimage.com/1200x630/ff3333/000000&text=Embarrassed",
-    "text": "She gets written up for inappropriate conduct. So much for Employee of the Month.",
     "isEnding": true
   },
 
   "shared_LunchRush": {
     "image": "https://dummyimage.com/1200x630/333/fff&text=Lunch+Rush",
-    "text": "The restaurant explodes with hungry customers. It's chaos for everyone!",
     "options": [
       { "id": "SurviveRush", "label": "Hold it together" },
       { "id": "LoseIt", "label": "Panic and hide in the freezer" }
@@ -76,33 +66,27 @@
 
   "Newt_SurviveRush": {
     "image": "https://dummyimage.com/1200x630/00ff00/000000&text=Promoted",
-    "text": "Newt survives and even gets promoted to fries captain. Legend!",
     "isEnding": true
   },
   "Munchies_SurviveRush": {
     "image": "https://dummyimage.com/1200x630/00ff00/000000&text=Hero",
-    "text": "Munchies becomes a kitchen legend. Free nuggets for life.",
     "isEnding": true
   },
   "Carly_SurviveRush": {
     "image": "https://dummyimage.com/1200x630/00ff00/000000&text=Queen",
-    "text": "Carly runs the front like a boss. Customers actually tip. What?",
     "isEnding": true
   },
 
   "Newt_LoseIt": {
     "image": "https://dummyimage.com/1200x630/ff3333/ffffff&text=Fired",
-    "text": "Newt freezes up in the freezer. You can't win 'em all.",
     "isEnding": true
   },
   "Munchies_LoseIt": {
     "image": "https://dummyimage.com/1200x630/ff3333/ffffff&text=Fired",
-    "text": "Munchies hides in the walk-in cooler. Manager isn't impressed.",
     "isEnding": true
   },
   "Carly_LoseIt": {
     "image": "https://dummyimage.com/1200x630/ff3333/ffffff&text=Fired",
-    "text": "Carly panics and spills drinks everywhere. Game over.",
     "isEnding": true
   }
 }
