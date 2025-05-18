@@ -58,11 +58,11 @@ const handleRequest = frames(async (ctx) => {
   if (step === "story" && selectedCharacter) {
     // 1) Resolve sceneKey (explicit next, or default to character_choice)
     let sceneKey = "";
-    if (nextSceneKey) {
-      sceneKey = nextSceneKey;
-    } else if (choice) {
-      sceneKey = `${selectedCharacter}_${choice}`;
-    } else {
+  if (nextSceneKey) {
+    sceneKey = nextSceneKey;
+  } else if (choice) {
+    sceneKey = scenes[choice] ? choice : `${selectedCharacter}_${choice}`;
+  } else {
       // Fallback if no choice
       return {
         image: "https://dummyimage.com/1200x630/000/fff&text=No+Scene+Key",
