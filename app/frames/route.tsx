@@ -62,7 +62,7 @@ const handleRequest = frames(async (ctx) => {
       sceneKey = nextSceneKey;
     } else if (choice) {
       // Check if choice is already a complete scene key
-      if (scenes[choice]) {
+      if (Object.prototype.hasOwnProperty.call(scenes, choice)) {
         sceneKey = choice;
       } else {
         // Try to construct character-specific scene key
@@ -80,6 +80,9 @@ const handleRequest = frames(async (ctx) => {
     }
 
     const scene = scenes[sceneKey];
+    console.log("Scene key:", sceneKey);
+    console.log("Scene image:", scene?.image);
+
     if (!scene) {
       return {
         image: "https://dummyimage.com/1200x630/ff4444/ffffff&text=Scene+Not+Found",
