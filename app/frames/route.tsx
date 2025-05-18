@@ -5,24 +5,24 @@ import sceneData from "../scenes.json" assert { type: "json" };
 
 type SceneOption = { id: string; label?: string; next?: string };
 type Scene = {
-  image:   string;
+  image: string;
   options?: SceneOption[];
   isEnding?: boolean;
 };
 const scenes: Record<string, Scene> = sceneData;
 
 const characterImages: Record<string, string> = {
-  Newt:     "https://new-mini-app-psi.vercel.app/wendys_emp_1.webp",
+  Newt: "https://new-mini-app-psi.vercel.app/wendys_emp_1.webp",
   Munchies: "https://new-mini-app-psi.vercel.app/wendys_emp_2.webp",
-  Carly:    "https://new-mini-app-psi.vercel.app/wendys_emp_3.webp",
+  Carly: "https://new-mini-app-psi.vercel.app/wendys_emp_3.webp",
 };
 
 const handleRequest = frames(async (ctx) => {
   const { searchParams, state } = ctx;
   const selectedCharacter = searchParams.character ?? state.character;
-  const step              = state?.step ?? "pickCharacter";
-  const choice            = searchParams.choice;
-  const nextSceneKey      = searchParams.next;
+  const step = state?.step ?? "pickCharacter";
+  const choice = searchParams.choice;
+  const nextSceneKey = searchParams.next;
 
   // === PICK CHARACTER ===
   if (step === "pickCharacter") {
@@ -42,27 +42,33 @@ const handleRequest = frames(async (ctx) => {
     return {
       image: characterImages[selectedCharacter]!,
       buttons: [
-        <Button action="post" target={{ query: { character: selectedCharacter, choice: "start" } }}>
+        <Button action="post" target={{ query: { character: selectedCharacter, next: "StartShift" } }}>
           Start Your Shift
         </Button>
       ],
       state: {
-        step:      "story",
+        step: "story",
         character: selectedCharacter,
-        path:      ["start"],
+        path: ["start"],
       },
     };
   }
 
   // === STORY ===
   if (step === "story" && selectedCharacter) {
-    // 1) Resolve sceneKey (explicit next, or default to character_choice)
+    // 1) Resolve sceneKey
     let sceneKey = "";
-  if (nextSceneKey) {
-    sceneKey = nextSceneKey;
-  } else if (choice) {
-    sceneKey = scenes[choice] ? choice : `${selectedCharacter}_${choice}`;
-  } else {
+    if (nextSceneKey) {
+      sceneKey = nextSceneKey;
+    } else if (choice) {
+      // Check if choice is already a complete scene key
+      if (scenes[choice]) {
+        sceneKey = choice;
+      } else {
+        // Try to construct character-specific scene key
+        sceneKey = `${selectedCharacter}_${choice}`;
+      }
+    } else {
       // Fallback if no choice
       return {
         image: "https://dummyimage.com/1200x630/000/fff&text=No+Scene+Key",
@@ -87,7 +93,7 @@ const handleRequest = frames(async (ctx) => {
     // 2) Handle endings (no options or isEnding true)
     if (!scene.options || scene.options.length === 0 || scene.isEnding) {
       return {
-        image: scene.image,
+        image: `https://new-mini-app-psi.vercel.app${scene.image}`,
         buttons: [
           <Button action="post" target={{ query: { character: "" } }}>Pick New Employee</Button>
         ],
@@ -97,7 +103,7 @@ const handleRequest = frames(async (ctx) => {
 
     // 3) Regular branching scene
     return {
-      image: `https://new-mini-app-psi.vercel.app/api/image?scene=${sceneKey}`,
+      image: `https://new-mini-app-psi.vercel.app${scene.image}`,
       buttons: scene.options.map((opt) =>
         <Button
           action="post"
@@ -111,9 +117,9 @@ const handleRequest = frames(async (ctx) => {
         </Button>
       ),
       state: {
-        step:      "story",
+        step: "story",
         character: selectedCharacter,
-        path:      [...(state.path ?? []), sceneKey],
+        path: [...(state.path ?? []), sceneKey],
       }
     };
   }
@@ -128,5 +134,5 @@ const handleRequest = frames(async (ctx) => {
   };
 });
 
-export const GET  = handleRequest;
+export const GET = handleRequest;
 export const POST = handleRequest;
