@@ -93,7 +93,7 @@ const handleRequest = frames(async (ctx) => {
     // 2) Handle endings (no options or isEnding true)
     if (!scene.options || scene.options.length === 0 || scene.isEnding) {
       return {
-        image: `https://new-mini-app-psi.vercel.app${scene.image}`,
+        image: scene.image,
         buttons: [
           <Button action="post" target={{ query: { character: "" } }}>Pick New Employee</Button>
         ],
@@ -103,7 +103,7 @@ const handleRequest = frames(async (ctx) => {
 
     // 3) Regular branching scene
     return {
-      image: `https://new-mini-app-psi.vercel.app${scene.image}`,
+      image: scene.image,
       buttons: scene.options.map((opt) =>
         <Button
           action="post"
