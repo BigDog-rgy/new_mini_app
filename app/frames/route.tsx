@@ -3,7 +3,7 @@ import { Button } from "frames.js/next";
 import { frames } from "./frames";
 import sceneData from "../scenes.json" assert { type: "json" };
 
-type SceneOption = { id: string; label: string; next?: string };
+type SceneOption = { id: string; label?: string; next?: string };
 type Scene = {
   image:   string;
   options?: SceneOption[];
@@ -107,7 +107,7 @@ const handleRequest = frames(async (ctx) => {
               : { query: { choice: opt.id, character: selectedCharacter } }
           }
         >
-          {opt.label}
+          {opt.label ?? "Continue"}
         </Button>
       ),
       state: {
