@@ -24,11 +24,14 @@ const handleRequest = frames(async (ctx) => {
   const choice = searchParams.choice;
   const nextSceneKey = searchParams.next;
 
+  // Dynamically determine origin (https://your-app.vercel.app)
+  const baseUrl = new URL(ctx.url).origin;
+
   // === PICK CHARACTER ===
   if (step === "pickCharacter") {
     if (!selectedCharacter) {
       return {
-        image: "https://new-mini-app-psi.vercel.app/welcome_to_wendys.png",
+        image: `${baseUrl}/welcome_to_wendys.png`,
         buttons: [
           <Button action="post" target={{ query: { character: "Newt" } }}>Newt</Button>,
           <Button action="post" target={{ query: { character: "Munchies" } }}>Munchies</Button>,
@@ -38,7 +41,6 @@ const handleRequest = frames(async (ctx) => {
       };
     }
 
-    // After picking, allow "Start Your Shift"
     return {
       image: characterImages[selectedCharacter]!,
       buttons: [
@@ -56,20 +58,14 @@ const handleRequest = frames(async (ctx) => {
 
   // === STORY ===
   if (step === "story" && selectedCharacter) {
-    // 1) Resolve sceneKey
     let sceneKey = "";
     if (nextSceneKey) {
       sceneKey = nextSceneKey;
     } else if (choice) {
-      // Check if choice is already a complete scene key
-      if (Object.prototype.hasOwnProperty.call(scenes, choice)) {
-        sceneKey = choice;
-      } else {
-        // Try to construct character-specific scene key
-        sceneKey = `${selectedCharacter}_${choice}`;
-      }
+      sceneKey = Object.prototype.hasOwnProperty.call(scenes, choice)
+        ? choice
+        : `${selectedCharacter}_${choice}`;
     } else {
-      // Fallback if no choice
       return {
         image: "https://dummyimage.com/1200x630/000/fff&text=No+Scene+Key",
         buttons: [
@@ -93,10 +89,13 @@ const handleRequest = frames(async (ctx) => {
       };
     }
 
-    // 2) Handle endings (no options or isEnding true)
+    const fullImageUrl = scene.image.startsWith("http")
+      ? scene.image
+      : `${baseUrl}${scene.image}`;
+
     if (!scene.options || scene.options.length === 0 || scene.isEnding) {
       return {
-        image: scene.image,
+        image: fullImageUrl,
         buttons: [
           <Button action="post" target={{ query: { character: "" } }}>Pick New Employee</Button>
         ],
@@ -104,9 +103,8 @@ const handleRequest = frames(async (ctx) => {
       };
     }
 
-    // 3) Regular branching scene
     return {
-      image: scene.image,
+      image: fullImageUrl,
       buttons: scene.options.map((opt) =>
         <Button
           action="post"
