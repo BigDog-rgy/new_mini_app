@@ -38,22 +38,22 @@
   "Newt_Choice1": {
     "image": "/scene_imgs/newt_choice1.jpg",
     "options": [
-      { "id": "Newt_Bad1", "label": "Wrong move", "next": "GameOver" },
-      { "id": "Newt_Good1", "label": "Handle it", "next": "Customer2" }
+      { "id": "Newt_Bad1", "label": "Run away", "next": "GameOver" },
+      { "id": "Newt_Good1", "label": "Give in", "next": "Customer2" }
     ]
   },
   "Newt_Choice2": {
     "image": "/scene_imgs/newt_choice2.jpg",
     "options": [
-      { "id": "Newt_Bad2", "label": "Wrong move", "next": "GameOver" },
-      { "id": "Newt_Good2", "label": "Handle it", "next": "Customer3" }
+      { "id": "Newt_Bad2", "label": "Cower", "next": "GameOver" },
+      { "id": "Newt_Good2", "label": "Hurry to get his food", "next": "Customer3" }
     ]
   },
   "Newt_Choice3": {
     "image": "/scene_imgs/newt_choice3.jpg",
     "options": [
-      { "id": "Newt_Bad3", "label": "Wrong move", "next": "GameOver" },
-      { "id": "Newt_Good3", "label": "Handle it", "next": "Newt_Win" }
+      { "id": "Newt_Bad3", "label": "Hyperventilate", "next": "GameOver" },
+      { "id": "Newt_Good3", "label": "Keep calm", "next": "Newt_Win" }
     ]
   },
   "Newt_Win": {
@@ -63,22 +63,22 @@
   "Carly_Choice1": {
     "image": "/scene_imgs/carly_choice1.jpg",
     "options": [
-      { "id": "Carly_Bad1", "label": "Wrong move", "next": "GameOver" },
-      { "id": "Carly_Good1", "label": "Handle it", "next": "Customer2" }
+      { "id": "Carly_Bad1", "label": "Get bitchy", "next": "GameOver" },
+      { "id": "Carly_Good1", "label": "Bite your lip", "next": "Customer2" }
     ]
   },
   "Carly_Choice2": {
     "image": "/scene_imgs/carly_choice2.jpg",
     "options": [
-      { "id": "Carly_Bad2", "label": "Wrong move", "next": "GameOver" },
-      { "id": "Carly_Good2", "label": "Handle it", "next": "Customer3" }
+      { "id": "Carly_Bad2", "label": "Be Flirty", "next": "GameOver" },
+      { "id": "Carly_Good2", "label": "Hand out the food", "next": "Customer3" }
     ]
   },
   "Carly_Choice3": {
     "image": "/scene_imgs/carly_choice3.jpg",
     "options": [
-      { "id": "Carly_Bad3", "label": "Wrong move", "next": "GameOver" },
-      { "id": "Carly_Good3", "label": "Handle it", "next": "Carly_Win" }
+      { "id": "Carly_Bad3", "label": "Let Newt handle crowd", "next": "GameOver" },
+      { "id": "Carly_Good3", "label": "Start taking orders", "next": "Carly_Win" }
     ]
   },
   "Carly_Win": {
@@ -88,22 +88,22 @@
   "Munchies_Choice1": {
     "image": "/scene_imgs/munchies_choice1.jpg",
     "options": [
-      { "id": "Munchies_Bad1", "label": "Wrong move", "next": "GameOver" },
-      { "id": "Munchies_Good1", "label": "Handle it", "next": "Customer2" }
+      { "id": "Munchies_Bad1", "label": "Tell lady to shove it", "next": "GameOver" },
+      { "id": "Munchies_Good1", "label": "Give her free fries", "next": "Customer2" }
     ]
   },
   "Munchies_Choice2": {
     "image": "/scene_imgs/munchies_choice2.jpg",
     "options": [
-      { "id": "Munchies_Bad2", "label": "Wrong move", "next": "GameOver" },
-      { "id": "Munchies_Good2", "label": "Handle it", "next": "Customer3" }
+      { "id": "Munchies_Bad2", "label": "Hit the blunt", "next": "GameOver" },
+      { "id": "Munchies_Good2", "label": "Get the drinks", "next": "Customer3" }
     ]
   },
   "Munchies_Choice3": {
     "image": "/scene_imgs/munchies_choice3.jpg",
     "options": [
-      { "id": "Munchies_Bad3", "label": "Wrong move", "next": "GameOver" },
-      { "id": "Munchies_Good3", "label": "Handle it", "next": "Munchies_Win" }
+      { "id": "Munchies_Bad3", "label": "Go home", "next": "GameOver" },
+      { "id": "Munchies_Good3", "label": "Help in kitchen", "next": "Munchies_Win" }
     ]
   },
   "Munchies_Win": {
